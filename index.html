@@ -38,9 +38,7 @@
 
         .story-text-container { display: flex; flex-direction: column; align-items: center; width: 100%; transition: 0.5s; }
         .story-text { font-size: 1.1rem; line-height: 1.4; min-height: 80px; transition: opacity 0.4s; color: #ddd; text-shadow: 2px 2px 10px rgba(0,0,0,1); width: 100%; }
-        .sub-text { font-size: 0.8rem; color: #aaa; margin-top: 5px; margin-bottom: 15px; opacity: 0; transition: opacity 0.4s; text-shadow: 2px 2px 10px rgba(0,0,0,1); font-weight: 400;}
 
-        /* TOMBOL NAVIGASI */
         #next-btn { margin-top: 20px; padding: 12px 30px; border-radius: 25px; border: 1.5px solid var(--accent); background: rgba(212, 163, 115, 0.1); color: var(--accent); cursor: pointer; font-family: inherit; font-weight: 600; font-size: 0.9rem; z-index: 100; transition: 0.3s; opacity: 1; backdrop-filter: blur(5px); }
         #next-btn:active { transform: scale(0.95); background: var(--accent); color: white; }
         #next-btn:disabled { opacity: 0.3; cursor: not-allowed; }
@@ -82,11 +80,10 @@
         <div class="container">
             <div id="photo-container" class="photo-frame"><img id="display-photo" src="foto-kecil.jpg" alt="bondol"></div>
             <div id="text-container" class="story-text-container">
-                <div id="text" class="story-text">ready?</div>
-                <div id="sub-text" class="sub-text">(jelek dikit gpp yh)</div>
+                <div id="text" class="story-text"></div>
                 <button id="next-btn" onclick="handleNextStep(event)">TAP DISINI →</button>
             </div>
-            <div id="grad" class="graduation-text">happy graduation, bondol.<br><span style="font-size: 1.3rem; font-family: 'Plus Jakarta Sans'; opacity: 0.8;">you deserve to be celebrated! 🚀</span></div>
+            <div id="grad" class="graduation-text">Happy Graduation<br><span style="font-size: 2.5rem;">Salsabila Azzahra</span><br><span style="font-size: 1.3rem; font-family: 'Plus Jakarta Sans'; opacity: 0.8; display: block; margin-top: 10px;">you deserve to be celebrated! 🚀</span></div>
         </div>
     </div>
 
@@ -97,7 +94,36 @@
         let isMuted = false;
         let canClick = true;
 
-        const stories = ["HAIII BONDOLL!!!", "SELAMAT WISUDAA YAA!!! 🎓✨", "inget foto ini gx?", "foto bondol kecil yang dunianya dulu cuma sebatas main doang,", "dulu bondol mana tau kan kalau perjalanan sekolah bakal seseru (dan secapek) ini wkwk", "orang lain mungkin cuma liat hasil ataw prestasimu aja,", "tapi ak tw kok perjuangan km buat sampe di hari ini tu egiluy bgt, amajing", "meskipun elo harus bangun pagi ke tempat yang <span class='highlight'>sebenernya bukan pilihan elo sendiri</span>..", "tapi liyat ini", "cantik kan?", "si bondol kecil itu udah segede ini,", "udah melangkah sejauh ini.", "walaupun harus selalu nurut apa kata papa tanpa dikasih banyak opsi", "tapi terbukti kan? elo tetep bisa finish dengan cara elo sendiri", "dan di tengah perjalanan yang 'terpaksa' itu juga,", "ada satu hal yang bikin teman ganteng lo ini ikut bangga..", "ternyata di tempat yang awalnya elo gak mau itu..", "lo dipertemukan sama <span class='highlight'>temen temen yang giluy paruy</span>", "orang orang yang nemenin elo ketawa pas dunia lagi gak baik baik aja.", "salah satunya ya jelas...", "lo nemuin orang satu ini..", "orang terganteng yang pernah lo temuin", "bondol kecil pasti bangga banget liat elo yang sekarang,", "bukan cuma karena lulus, tapi karna elo berhasil bertahan jadi diri sendiri!", "HAPPY GRADUATION, BONDOL! 🥂", "sekarang duniamu udah luas banget", "pelan pelan, elo udah bisa mulai milih jalan elo sendiri yaaaa,", "pilih jalan yang bener bener bikin elo bahagia. yeayyyyy 🚀"];
+        const stories = [
+            "HAIII BONDOLL!!!", 
+            "SELAMAT WISUDAA YAA!!! 🎓✨", 
+            "inget foto ini gx?", 
+            "foto bondol kecil yang dunianya dulu cuma sebatas main doang,", 
+            "dulu bondol mana tau kan kalau perjalanan sekolah bakal seseru (dan secapek) ini wkwk", 
+            "orang lain mungkin cuma liat hasil ataw prestasimu aja,", 
+            "tapi ak tw kok perjuangan km buat sampe di hari ini tu egiluy bgt, amajing", 
+            "meskipun elo harus bangun pagi ke tempat yang <span class='highlight'>sebenernya bukan pilihan elo sendiri</span>..", 
+            "tapi liyat ini", 
+            "cantik kan?", 
+            "si bondol kecil itu udah segede ini,", 
+            "udah melangkah sejauh ini.", 
+            "walaupun harus selalu nurut apa kata papa tanpa dikasih banyak opsi", 
+            "tapi terbukti kan? elo tetep bisa finish dengan cara elo sendiri", 
+            "dan di tengah perjalanan yang 'terpaksa' itu juga,", 
+            "ada satu hal yang bikin teman ganteng lo ini ikut bangga..", 
+            "ternyata di tempat yang awalnya elo gak mau itu..", 
+            "lo dipertemukan sama <span class='highlight'>temen temen yang giluy paruy</span>", 
+            "orang orang yang nemenin elo ketawa pas dunia lagi gak baik baik aja.", 
+            "salah satunya ya jelas...", 
+            "lo nemuin orang satu ini..", 
+            "orang terganteng yang pernah lo nemuin", 
+            "bondol kecil pasti bangga banget liat elo yang sekarang,", 
+            "bukan cuma karena lulus, tapi karna elo berhasil bertahan jadi diri sendiri!", 
+            "HAPPY GRADUATION, BONDOL! 🥂", 
+            "sekarang duniamu udah luas banget", 
+            "pelan pelan, elo udah bisa mulai milih jalan elo sendiri yaaaa,", 
+            "pilih jalan yang bener bener bikin elo bahagia. yeayyyyy 🚀"
+        ];
         const bgTexts = ["my bondol gueh", "happy graduation", "semangattt", "you did it", "proud of you", "calon mahasiswa undip", "bespren poreper", "be happy", "2026", "graduation", "pilih jalanmu"];
 
         function startStory(e) {
@@ -136,36 +162,30 @@
 
         function nextStep() {
             if (step < stories.length) {
-                canClick = false; // Kunci tombol
+                canClick = false; 
                 const btn = document.getElementById('next-btn');
                 btn.disabled = true;
 
                 const textEl = document.getElementById('text');
-                const subTextEl = document.getElementById('sub-text');
                 const photoContainer = document.getElementById('photo-container');
-                const displayPhoto = document.getElementById('display-photo');
                 
                 textEl.style.opacity = "0";
-                subTextEl.style.opacity = "0";
 
                 setTimeout(() => { 
-                    // Styling Khusus Header
                     if (step === 0 || step === 1) {
                         textEl.style.fontSize = "3rem";
                         textEl.style.fontWeight = "800";
-                        subTextEl.style.opacity = "1";
                     } else {
                         textEl.style.fontSize = "1.1rem";
                         textEl.style.fontWeight = "400";
-                        subTextEl.style.opacity = "0";
                     }
 
-                    // Sinkronisasi Foto
                     if (step === 2) {
                         photoContainer.style.display = "block";
                         setTimeout(() => { photoContainer.style.opacity = "1"; }, 50);
                     }
                     
+                    // SINKRONISASI FOTO BARU (SETELAH PENAMBAHAN STEP)
                     if (step === 8) changePhoto("foto-besar.jpg");
                     if (step === 17) changePhoto("foto-teman.jpg");
                     if (step === 20) changePhoto("foto-fari.jpg");
@@ -175,11 +195,10 @@
                     textEl.style.opacity = "1"; 
                     step++; 
 
-                    // Buka kunci setelah 1 detik (delay ketukan)
                     setTimeout(() => { 
                         canClick = true; 
                         btn.disabled = false;
-                    }, 250); 
+                    }, 350); 
                 }, 400); 
             } else { 
                 showFinal(); 
