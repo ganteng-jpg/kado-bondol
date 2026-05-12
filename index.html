@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>happy graduation, bondol.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-dark: #0f0f0f; --accent: #d4a373; --text-dark: #e0e0e0; --bg-light: #fffaf0; --text-light: #5d4037; }
+        body, html { margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100%; background: var(--bg-light); }
+
+        #ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f0f; z-index: 1; display: none; }
+        .text-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; overflow: hidden; display: none; opacity: 0.50; }
+        .moving-text { position: absolute; white-space: nowrap; font-weight: 800; text-transform: lowercase; color: var(--accent); animation: moveSide linear infinite; }
+        @keyframes moveSide { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
+
+        .audio-control { position: fixed; top: 25px; left: 25px; display: flex; flex-direction: column; align-items: center; z-index: 100; cursor: pointer; display: none; }
+        #mute-btn { font-size: 1.8rem; opacity: 0.6; transition: 0.3s; }
+        .mute-text { font-size: 0.6rem; margin-top: 5px; color: var(--accent); opacity: 0.7; font-weight: 600; text-transform: lowercase; }
+
+        #front-page { background-color: var(--bg-light); color: var(--text-light); height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; transition: opacity 1.2s ease; position: absolute; width: 100%; z-index: 50; }
+        .bunga-box { width: 220px; height: 280px; border-radius: 100px 100px 30px 30px; overflow: hidden; margin-bottom: 25px; border: 6px solid white; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .bunga-box img { width: 100%; height: 100%; object-fit: cover; }
+        #front-page h1 { font-family: 'Sacramento', cursive; font-size: 4rem; color: #bc6c25; margin: 0; }
+
+        .gift-wrapper { position: fixed; bottom: 40px; right: 40px; display: flex; flex-direction: column; align-items: center; z-index: 60; transition: 0.5s; }
+        #gift-button { font-size: 4rem; cursor: pointer; background: none; border: none; animation: pulse 2s infinite; }
+        .gift-text { font-size: 0.8rem; margin-top: 10px; color: #bc6c25; font-weight: 600; animation: blink 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+        #story-page { height: 100vh; display: flex; justify-content: center; align-items: center; transition: opacity 1.5s ease; opacity: 0; visibility: hidden; position: absolute; width: 100%; z-index: 5; }
+        .container { max-width: 500px; width: 90%; text-align: center; position: relative; z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+        
+        .photo-frame { width: 280px; height: 280px; margin: 0 auto 20px; border-radius: 30px; overflow: hidden; border: 4px solid var(--accent); opacity: 0; transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out; box-shadow: 0 20px 60px rgba(0,0,0,0.8); z-index: 30; position: relative; display: none; }
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.6s ease-in-out; opacity: 1; }
+        .photo-frame.final-mode { transform: scale(1.1); border: 5px solid var(--accent); opacity: 1 !important; }
+
+        .story-text-container { display: flex; flex-direction: column; align-items: center; width: 100%; transition: 0.5s; }
+        .story-text { font-size: 1.1rem; line-height: 1.4; min-height: 80px; transition: opacity 0.4s; color: #ddd; text-shadow: 2px 2px 10px rgba(0,0,0,1); width: 100%; }
+        .sub-text { font-size: 0.8rem; color: #aaa; margin-top: 5px; margin-bottom: 15px; opacity: 0; transition: opacity 0.4s; text-shadow: 2px 2px 10px rgba(0,0,0,1); font-weight: 400;}
+
+        /* TOMBOL NAVIGASI */
+        #next-btn { margin-top: 20px; padding: 12px 30px; border-radius: 25px; border: 1.5px solid var(--accent); background: rgba(212, 163, 115, 0.1); color: var(--accent); cursor: pointer; font-family: inherit; font-weight: 600; font-size: 0.9rem; z-index: 100; transition: 0.3s; opacity: 1; backdrop-filter: blur(5px); }
+        #next-btn:active { transform: scale(0.95); background: var(--accent); color: white; }
+        #next-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .graduation-text { font-family: 'Sacramento', cursive; font-size: 3.5rem; color: var(--accent); display: none; margin-top: 20px; animation: fadeInUp 1s forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .highlight { color: var(--accent); font-weight: 600; }
+
+        .final-memories { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; overflow: hidden; display: none; }
+        .floating-photo { position: absolute; width: 140px; height: 140px; object-fit: cover; border-radius: 15px; opacity: 0; animation: floatFade 12s infinite linear forwards; filter: brightness(0.7); }
+        @keyframes floatFade { 0% { opacity: 0; transform: translateY(50px); } 20% { opacity: 0.4; } 80% { opacity: 0.4; } 100% { opacity: 0; transform: translateY(-150px); } }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop><source src="musik.mp3" type="audio/mpeg"></audio>
+
+    <div class="audio-control" id="audio-ctrl" onclick="toggleAudio(event)">
+        <span id="mute-btn">🔊</span>
+        <span class="mute-text">bungkam tulus disini</span>
+    </div>
+
+    <div id="ambient-bg"></div>
+    <div id="text-cloud" class="text-background"></div>
+
+    <div id="front-page">
+        <div class="bunga-box"><img src="bunga-utama.jpg" alt="flowers"></div>
+        <h1>flowers for you</h1>
+        <p>congratulations on your graduation!</p>
+    </div>
+
+    <div class="gift-wrapper" id="gift-wrapper">
+        <button id="gift-button" onclick="startStory(event)">🎁</button>
+        <div class="gift-text">niii ada kadooo</div>
+    </div>
+
+    <div id="story-page">
+        <div id="final-bg" class="final-memories"></div>
+        <div class="container">
+            <div id="photo-container" class="photo-frame"><img id="display-photo" src="foto-kecil.jpg" alt="bondol"></div>
+            <div id="text-container" class="story-text-container">
+                <div id="text" class="story-text">ready?</div>
+                <div id="sub-text" class="sub-text">(pake earphone lebih enak lek)</div>
+                <button id="next-btn" onclick="handleNextStep(event)">TAP DISINI →</button>
+            </div>
+            <div id="grad" class="graduation-text">happy graduation, bondol.<br><span style="font-size: 1.3rem; font-family: 'Plus Jakarta Sans'; opacity: 0.8;">you deserve to be celebrated! 🚀</span></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        let step = 0; 
+        let isStoryStarted = false; 
+        let isMuted = false;
+        let canClick = true;
+
+        const stories = ["HAIII BONDOLL!!!", "SELAMAT WISUDAA YAA!!! 🎓✨", "inget foto ini gx?", "foto bondol kecil yang dunianya dulu cuma sebatas main doang,", "dulu bondol mana tau kan kalau perjalanan sekolah bakal seseru (dan secapek) ini wkwk", "orang lain mungkin cuma liat hasil ataw prestasimu aja,", "tapi ak tw kok perjuangan km buat sampe di hari ini tu egiluy bgt, amajing", "meskipun elo harus bangun pagi ke tempat yang <span class='highlight'>sebenernya bukan pilihan elo sendiri</span>..", "tapi liyat ini", "cantik kan?", "si bondol kecil itu udah segede ini,", "udah melangkah sejauh ini.", "walaupun harus selalu nurut apa kata papa tanpa dikasih banyak opsi", "tapi terbukti kan? elo tetep bisa finish dengan cara elo sendiri", "dan di tengah perjalanan yang 'terpaksa' itu juga,", "ada satu hal yang bikin teman ganteng lo ini ikut bangga..", "ternyata di tempat yang awalnya elo gak mau itu..", "lo dipertemukan sama <span class='highlight'>temen temen yang giluy paruy</span>", "orang orang yang nemenin elo ketawa pas dunia lagi gak baik baik aja.", "salah satunya ya jelas...", "lo nemuin orang satu ini..", "orang terganteng yang pernah lo temuin", "bondol kecil pasti bangga banget liat elo yang sekarang,", "bukan cuma karena lulus, tapi karna elo berhasil bertahan jadi diri sendiri!", "HAPPY GRADUATION, BONDOL! 🥂", "sekarang duniamu udah luas banget", "pelan pelan, elo udah bisa mulai milih jalan elo sendiri yaaaa,", "pilih jalan yang bener bener bikin elo bahagia. yeayyyyy 🚀"];
+        const bgTexts = ["my bondol gueh", "happy graduation", "semangattt", "you did it", "proud of you", "calon mahasiswa undip", "bespren poreper", "be happy", "2026", "graduation", "pilih jalanmu"];
+
+        function startStory(e) {
+            e.stopPropagation(); 
+            document.getElementById('bgMusic').play(); 
+            isStoryStarted = true;
+            document.getElementById('front-page').style.opacity = '0';
+            document.getElementById('gift-wrapper').style.opacity = '0'; 
+            
+            setTimeout(() => {
+                document.getElementById('front-page').style.display = 'none';
+                document.getElementById('gift-wrapper').style.display = 'none';
+                document.getElementById('audio-ctrl').style.display = 'flex';
+                document.getElementById('ambient-bg').style.display = 'block';
+                document.getElementById('text-cloud').style.display = 'block';
+                document.getElementById('story-page').style.visibility = 'visible';
+                document.getElementById('story-page').style.opacity = '1';
+                initTextCloud(); 
+                nextStep();
+            }, 1200);
+        }
+
+        function toggleAudio(e) { 
+            e.stopPropagation(); 
+            const bgMusic = document.getElementById('bgMusic'); 
+            const muteBtn = document.getElementById('mute-btn'); 
+            if (isMuted) { bgMusic.play(); muteBtn.innerText = "🔊"; } 
+            else { bgMusic.pause(); muteBtn.innerText = "🔇"; } 
+            isMuted = !isMuted; 
+        }
+
+        function handleNextStep(e) {
+            e.stopPropagation();
+            if (canClick) nextStep();
+        }
+
+        function nextStep() {
+            if (step < stories.length) {
+                canClick = false; // Kunci tombol
+                const btn = document.getElementById('next-btn');
+                btn.disabled = true;
+
+                const textEl = document.getElementById('text');
+                const subTextEl = document.getElementById('sub-text');
+                const photoContainer = document.getElementById('photo-container');
+                const displayPhoto = document.getElementById('display-photo');
+                
+                textEl.style.opacity = "0";
+                subTextEl.style.opacity = "0";
+
+                setTimeout(() => { 
+                    // Styling Khusus Header
+                    if (step === 0 || step === 1) {
+                        textEl.style.fontSize = "3rem";
+                        textEl.style.fontWeight = "800";
+                        subTextEl.style.opacity = "1";
+                    } else {
+                        textEl.style.fontSize = "1.1rem";
+                        textEl.style.fontWeight = "400";
+                        subTextEl.style.opacity = "0";
+                    }
+
+                    // Sinkronisasi Foto
+                    if (step === 2) {
+                        photoContainer.style.display = "block";
+                        setTimeout(() => { photoContainer.style.opacity = "1"; }, 50);
+                    }
+                    
+                    if (step === 8) changePhoto("foto-besar.jpg");
+                    if (step === 17) changePhoto("foto-teman.jpg");
+                    if (step === 20) changePhoto("foto-fari.jpg");
+                    if (step === 22) changePhoto("foto-kecil-2.jpg");
+
+                    textEl.innerHTML = stories[step]; 
+                    textEl.style.opacity = "1"; 
+                    step++; 
+
+                    // Buka kunci setelah 1 detik (delay ketukan)
+                    setTimeout(() => { 
+                        canClick = true; 
+                        btn.disabled = false;
+                    }, 250); 
+                }, 400); 
+            } else { 
+                showFinal(); 
+            }
+        }
+
+        function changePhoto(newSrc) {
+            const img = document.getElementById('display-photo');
+            img.style.opacity = "0"; 
+            setTimeout(() => { 
+                img.src = newSrc; 
+                img.style.opacity = "1"; 
+            }, 400);
+        }
+
+        function showFinal() {
+            document.getElementById('text-container').style.opacity = "0";
+            
+            setTimeout(() => {
+                document.getElementById('text-container').style.display = "none";
+                document.getElementById('photo-container').classList.add('final-mode');
+                document.getElementById('display-photo').src = "lulus.jpg";
+                document.getElementById('grad').style.display = "block";
+                document.getElementById('final-bg').style.display = "block";
+                
+                const friendPhotos = ["tmn1.jpg", "tmn2.jpg", "tmn3.jpg"];
+                friendPhotos.forEach((src, index) => {
+                    const img = document.createElement('img'); 
+                    img.src = src; 
+                    img.className = 'floating-photo';
+                    img.style.top = (Math.random() * 60 + 10) + "%"; 
+                    img.style.left = (Math.random() * 60 + 10) + "%";
+                    img.style.animationDelay = (index * 4) + "s"; 
+                    document.getElementById('final-bg').appendChild(img);
+                });
+                playMegaConfetti();
+            }, 500);
+        }
+
+        function playMegaConfetti() {
+            const end = Date.now() + (15 * 1000);
+            (function frame() {
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#d4a373', '#ffffff'] });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#d4a373', '#ffffff'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
+        function initTextCloud() {
+            const textCloud = document.getElementById('text-cloud');
+            for (let i = 0; i < 15; i++) {
+                const span = document.createElement('span'); span.className = 'moving-text';
+                span.innerText = bgTexts[Math.floor(Math.random() * bgTexts.length)];
+                span.style.top = (i * 7) + "vh"; span.style.fontSize = (Math.random() * 2 + 1) + "rem";
+                span.style.animationDuration = (Math.random() * 10 + 10) + "s";
+                span.style.animationDelay = (Math.random() * 5) + "s";
+                span.style.opacity = Math.random() * 0.5 + 0.1; textCloud.appendChild(span);
+            }
+        }
+    </script>
+</body>
+</html>
