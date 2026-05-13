@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Sacramento&display=swap" rel="stylesheet">
     <style>
         :root { --bg-dark: #0f0f0f; --accent: #d4a373; --text-dark: #e0e0e0; --bg-light: #fffaf0; --text-light: #5d4037; }
-        body, html { margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100%; background: var(--bg-light); }
+        body, html { margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100%; background: var(--bg-light); touch-action: manipulation; -webkit-tap-highlight-color: transparent;  }
 
         #ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f0f; z-index: 1; display: none; }
         .text-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; overflow: hidden; display: none; opacity: 0.50; }
@@ -239,7 +239,7 @@
         }
 
         function playMegaConfetti() {
-            const end = Date.now() + (15 * 1000);
+            const end = Date.now() + (6 * 1000);
             (function frame() {
                 confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#d4a373', '#ffffff'] });
                 confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#d4a373', '#ffffff'] });
