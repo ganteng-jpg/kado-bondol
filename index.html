@@ -225,29 +225,66 @@
 }
 
         function showFinal() {
-            document.getElementById('text-container').style.opacity = "0";
-            
+    document.getElementById('text-container').style.opacity = "0";
+
+    const img = document.getElementById('display-photo');
+
+    setTimeout(() => {
+        document.getElementById('text-container').style.display = "none";
+
+        img.style.opacity = "0";
+        img.style.transform = "scale(1.12)";
+
+        const finalImage = new Image();
+        finalImage.src = "lulus.jpg";
+
+        finalImage.onload = () => {
+
             setTimeout(() => {
-                document.getElementById('text-container').style.display = "none";
-                document.getElementById('photo-container').classList.add('final-mode');
-                document.getElementById('display-photo').src = "lulus.jpg";
+                img.src = "lulus.jpg";
+
+                img.style.opacity = "1";
+                img.style.transform = "scale(1)";
+
+                document.getElementById('photo-container')
+                    .classList.add('final-mode');
+
                 document.getElementById('grad').style.display = "block";
                 document.getElementById('final-bg').style.display = "block";
-                
-                const friendPhotos = ["tmn1.jpg", "tmn2.jpg", "tmn3.jpg"];
-                friendPhotos.forEach((src, index) => {
-                    const img = document.createElement('img'); 
-                    img.src = src; 
-                    img.className = 'floating-photo';
-                    img.style.top = (Math.random() * 60 + 10) + "%"; 
-                    img.style.left = (Math.random() * 60 + 10) + "%";
-                    img.style.animationDelay = (index * 4) + "s"; 
-                    document.getElementById('final-bg').appendChild(img);
-                });
-                playMegaConfetti();
-            }, 500);
-        }
 
+                const friendPhotos = [
+                    "tmn1.jpg",
+                    "tmn2.jpg",
+                    "tmn3.jpg"
+                ];
+
+                friendPhotos.forEach((src, index) => {
+                    const floating = document.createElement('img');
+
+                    floating.src = src;
+                    floating.className = 'floating-photo';
+
+                    floating.style.top =
+                        (Math.random() * 60 + 10) + "%";
+
+                    floating.style.left =
+                        (Math.random() * 60 + 10) + "%";
+
+                    floating.style.animationDelay =
+                        (index * 4) + "s";
+
+                    document
+                        .getElementById('final-bg')
+                        .appendChild(floating);
+                });
+
+                playMegaConfetti();
+
+            }, 400);
+        };
+
+    }, 500);
+}
         function playMegaConfetti() {
             const end = Date.now() + (6 * 1000);
             (function frame() {
